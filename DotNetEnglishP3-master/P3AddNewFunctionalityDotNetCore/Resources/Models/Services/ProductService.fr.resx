@@ -117,25 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DescriptionLength" xml:space="preserve">
+    <value>La description est limitée à 200 caractères.</value>
+  </data>
+  <data name="DetailsLength" xml:space="preserve">
+    <value>Les détails sont limités à 400 caractères.</value>
+  </data>
+  <data name="LengthName" xml:space="preserve">
+    <value>Le nom est limité à 100 caractères.</value>
+  </data>
   <data name="MissingName" xml:space="preserve">
-    <value>Veuillez saisir un nom</value>
+    <value>Veuillez saisir un nom.</value>
   </data>
   <data name="MissingPrice" xml:space="preserve">
-    <value>Veuillez saisir un prix</value>
+    <value>Veuillez saisir un prix.</value>
   </data>
   <data name="MissingStock" xml:space="preserve">
-    <value>Veuillez saisir un stock</value>
+    <value>Veuillez saisir un stock.</value>
   </data>
   <data name="PriceNotANumber" xml:space="preserve">
-    <value>La valeur saisie pour le prix doit être un nombre</value>
+    <value>La valeur saisie pour le prix doit être un nombre avec 2 chiffres maximum après la virgule.</value>
   </data>
   <data name="PriceNotGreaterThanZero" xml:space="preserve">
-    <value>La prix doit être supérieur à zéro</value>
+    <value>La prix doit être supérieur à zéro.</value>
   </data>
   <data name="StockNotAnInteger" xml:space="preserve">
-    <value>La valeur saisie pour le stock doit être un entier</value>
+    <value>La valeur saisie pour le stock doit être un entier.</value>
   </data>
   <data name="StockNotGreaterThanZero" xml:space="preserve">
-    <value>La stock doit être supérieure à zéro</value>
+    <value>Le stock doit être supérieur à zéro.</value>
   </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using P3AddNewFunctionalityDotNetCore.Models.Entities;
+﻿using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using P3AddNewFunctionalityDotNetCore.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,11 +32,13 @@ namespace P3AddNewFunctionalityDotNetCore.Models
 
         public double GetTotalValue()
         {
+            // UPD SMO : set to null value, before ==> return _cartLines.Any() ? _cartLines.Sum(l => l.Product.Price) : 0;
             return _cartLines.Any() ? _cartLines.Sum(l => l.Product.Price) : 0;
         }
 
         public double GetAverageValue()
         {
+            // UPD SMO : set to null value, before ==> return _cartLines.Any() ? _cartLines.Average(l => l.Product.Price) : 0;
             return _cartLines.Any() ? _cartLines.Average(l => l.Product.Price) : 0;
         }
 

@@ -90,8 +90,10 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             }
         }
 
-        // TODO this is an example method, remove it and perform model validation using data annotations
-        public List<string> CheckProductModelErrors(ProductViewModel product)
+        // TODO this is an example method, remove it and perform model validation using data annotations.
+        // UPD01(SMO) : Comment CheckProductModelErrors for
+        // managing model validation with data annotations in Product.cs.
+        /* public List<string> CheckProductModelErrors(ProductViewModel product)
         {
             List<string> modelErrors = new List<string>();
             if (product.Name == null || string.IsNullOrWhiteSpace(product.Name))
@@ -130,7 +132,7 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             }
 
             return modelErrors;
-        }
+        }*/
 
         public void SaveProduct(ProductViewModel product)
         {

@@ -40,12 +40,17 @@ namespace P3AddNewFunctionalityDotNetCore.Controllers
         [HttpPost]
         public IActionResult Create(ProductViewModel product)
         {
-            List<string> modelErrors = _productService.CheckProductModelErrors(product);           
+            // UPD01(SMO) : Comment call to CheckProductModelErrors
+            // for using data annotations
+            /* List<string> modelErrors = _productService.CheckProductModelErrors(product);           
 
             foreach (string error in modelErrors)
             {
+                // SMO : This add an error to the model ==> 
+                // to change for data annotations.
                 ModelState.AddModelError("", error);
             }
+            */
 
             if (ModelState.IsValid)
             {

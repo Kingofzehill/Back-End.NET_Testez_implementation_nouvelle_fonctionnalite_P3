@@ -117,25 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DescriptionLength" xml:space="preserve">
+    <value>The description is limited to 200 caracters.</value>
+  </data>
+  <data name="DetailsLength" xml:space="preserve">
+    <value>The Details is limited to 400 caracters.</value>
+  </data>
+  <data name="LengthName" xml:space="preserve">
+    <value>The name is limited to 100 caracters.</value>
+  </data>
   <data name="MissingName" xml:space="preserve">
-    <value>Please enter a name</value>
+    <value>Please enter a name.</value>
   </data>
   <data name="MissingPrice" xml:space="preserve">
-    <value>Please enter a price</value>
+    <value>Please enter a price.</value>
   </data>
   <data name="MissingStock" xml:space="preserve">
-    <value>Please enter a stock value</value>
+    <value>Please enter a stock value.</value>
   </data>
   <data name="PriceNotANumber" xml:space="preserve">
-    <value>The value entered for the price must be a number</value>
+    <value>The value entered for the price must be a number with a maximum of 2 decimal digits.</value>
   </data>
   <data name="PriceNotGreaterThanZero" xml:space="preserve">
-    <value>The price must be greater than zero</value>
+    <value>The price must be greater than zero.</value>
   </data>
   <data name="StockNotAnInteger" xml:space="preserve">
-    <value>The value entered for the stock must be a integer</value>
+    <value>The value entered for the stock must be a integer.</value>
   </data>
   <data name="StockNotGreaterThanZero" xml:space="preserve">
-    <value>The stock must greater than zero</value>
+    <value>The stock must greater than zero.</value>
   </data>
 </root>
