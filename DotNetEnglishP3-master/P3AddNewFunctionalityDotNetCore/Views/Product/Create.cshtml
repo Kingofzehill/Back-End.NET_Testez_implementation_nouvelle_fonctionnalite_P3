@@ -3,23 +3,29 @@
     ViewData["Title"] = Localizer["CreatProductTitle"];
     Layout = "_AdminLayout";
 }
-
+@* UPD02(SMO) : add viewBag display. <h3>@ViewBag.Result</h3> *@
 <div asp-validation-summary="All" class="text-danger"></div>
 <form asp-action="Create" method="post">
     <div class="mb-3 col-6">
-        <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control" />
+        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
+        <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control" />@Html.ValidationMessageFor(model => model.Name)
     </div>
     <div class="mb-3 col-4">
-        <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control" />
+        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
+        @* UPD03(SMO) : Price datatype changed form string to double *@
+        <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control" />@Html.ValidationMessageFor(model => model.Price)
     </div>
     <div class="mb-3 col-8">
-        <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control" />
+        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
+        <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control" />@Html.ValidationMessageFor(model => model.Description)
     </div>
     <div class="mb-3 col-4">
-        <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control" />
+        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
+        <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control" />@Html.ValidationMessageFor(model => model.Stock)
     </div>
     <div class="mb-3col-8">
-        <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control" />
+        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
+        <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control" />@Html.ValidationMessageFor(model => model.Details)
     </div>
     <div class="text-center">
         <input class="btn btn-primary" type="submit" value="@Localizer["OK"]" />

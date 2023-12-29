@@ -41,7 +41,9 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
                 {
                     Id = product.Id,
                     Stock = product.Quantity.ToString(),
-                    Price = product.Price.ToString(CultureInfo.InvariantCulture),
+                    // UPD(SMO) : propage datatype change to double of Price in ProductViewModel
+                    // OLD ==> Price = product.Price.ToString(CultureInfo.InvariantCulture),
+                    Price = product.Price,
                     Name = product.Name,
                     Description = product.Description,
                     Details = product.Details
@@ -92,7 +94,7 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
 
         // TODO this is an example method, remove it and perform model validation using data annotations.
         // UPD01(SMO) : Comment CheckProductModelErrors for
-        // managing model validation with data annotations in Product.cs.
+        // managing model validation with data annotations in ProductViewModel.cs.
         /* public List<string> CheckProductModelErrors(ProductViewModel product)
         {
             List<string> modelErrors = new List<string>();
@@ -145,7 +147,10 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             Product productEntity = new Product
             {
                 Name = product.Name,
-                Price = double.Parse(product.Price),
+                // UPD002(SMO) : propage datatype change to double of Price in ProductViewModel
+                // OLD ==> Price = double.Parse(product.Price),
+                // Price = product.Price;
+                Price = double.Parse(product.Price.ToString()),
                 Quantity = Int32.Parse(product.Stock),
                 Description = product.Description,
                 Details = product.Details

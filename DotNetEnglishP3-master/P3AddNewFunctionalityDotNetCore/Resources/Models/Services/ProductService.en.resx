@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DescriptionLength" xml:space="preserve">
-    <value>The description is limited to 200 caracters.</value>
-  </data>
-  <data name="DetailsLength" xml:space="preserve">
-    <value>The Details is limited to 400 caracters.</value>
-  </data>
-  <data name="LengthName" xml:space="preserve">
-    <value>The name is limited to 100 caracters.</value>
-  </data>
   <data name="MissingName" xml:space="preserve">
     <value>Please enter a name.</value>
   </data>

@@ -126,6 +126,24 @@
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="MaxDescriptionLength" xml:space="preserve">
+    <value>The description must be less than 200 characters.</value>
+  </data>
+  <data name="MaxDetailsLength" xml:space="preserve">
+    <value>Details must be less than 400 characters.</value>
+  </data>
+  <data name="MaxNameLength" xml:space="preserve">
+    <value>The name must be less than 100 characters.</value>
+  </data>
+  <data name="MissingName" xml:space="preserve">
+    <value>The name is required.</value>
+  </data>
+  <data name="MissingPrice" xml:space="preserve">
+    <value>The price is mandatory.</value>
+  </data>
+  <data name="MissingQuantity" xml:space="preserve">
+    <value>Stock is mandatory.</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -134,6 +152,18 @@
   </data>
   <data name="Price" xml:space="preserve">
     <value>Price</value>
+  </data>
+  <data name="PriceNotANumber" xml:space="preserve">
+    <value>The price must be an integer or decimal value (with a maximum of two digits after the decimal separator)</value>
+  </data>
+  <data name="PriceNotGreaterThanZero" xml:space="preserve">
+    <value>Price cannot be 0 and must be between 0.1 and 10000.</value>
+  </data>
+  <data name="QuantityNotAnInteger" xml:space="preserve">
+    <value>The stock must be an integer value.</value>
+  </data>
+  <data name="QuantityNotGreaterThanZero" xml:space="preserve">
+    <value>Stock cannot be 0 and must be between 1 and 10000</value>
   </data>
   <data name="Stock" xml:space="preserve">
     <value>Stock</value>
