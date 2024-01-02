@@ -6,26 +6,29 @@
 @* UPD02(SMO) : add viewBag display. <h3>@ViewBag.Result</h3> *@
 <div asp-validation-summary="All" class="text-danger"></div>
 <form asp-action="Create" method="post">
-    <div class="mb-3 col-6">
-        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
-        <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control" />@Html.ValidationMessageFor(model => model.Name)
+    <div class="mb-3 col-6">        
+        <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control" />
+        @* UPD02(SMO) : Client side validation error message *@
+        <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+        @*<label class="text-danger">* @Html.ValidationMessageFor(model => model.Name) * @Html.ValidationMessage("Name","*")</label>*@
     </div>
     <div class="mb-3 col-4">
-        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
-        @* UPD03(SMO) : Price datatype changed form string to double *@
-        <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control" />@Html.ValidationMessageFor(model => model.Price)
+        <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control" />
+        @* UPD02(SMO) : Client side validation error message *@
+        <span class="text-danger field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span>
+        @* @Html.ValidationMessageFor(model => model.Price) *@
     </div>
-    <div class="mb-3 col-8">
-        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
-        <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control" />@Html.ValidationMessageFor(model => model.Description)
+    <div class="mb-3 col-8">        
+        <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control" />        
     </div>
     <div class="mb-3 col-4">
-        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
-        <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control" />@Html.ValidationMessageFor(model => model.Stock)
+        @* UPD02(SMO) : Client side validation error message *@
+        <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control" />
+        <span class="text-danger field-validation-valid" data-valmsg-for="Stock" data-valmsg-replace="true"></span>
+        @*@Html.ValidationMessageFor(model => model.Stock)*@
     </div>
-    <div class="mb-3col-8">
-        @* UPD02(SMO) : ValidationMessageFor displays error message. *@
-        <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control" />@Html.ValidationMessageFor(model => model.Details)
+    <div class="mb-3col-8">        
+        <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control" />        
     </div>
     <div class="text-center">
         <input class="btn btn-primary" type="submit" value="@Localizer["OK"]" />
