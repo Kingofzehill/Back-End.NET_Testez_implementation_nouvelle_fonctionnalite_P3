@@ -65,4 +65,5 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         {
 
         }
+    }
 }
