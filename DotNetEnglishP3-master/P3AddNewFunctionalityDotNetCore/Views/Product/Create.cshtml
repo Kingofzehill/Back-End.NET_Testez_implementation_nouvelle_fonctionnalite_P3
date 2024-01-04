@@ -8,12 +8,12 @@
 <div asp-validation-summary="All" class="text-danger">
     @* UPD02-TEST(SMO) : test of displaying string from resource file (bug issue : 
     error message not displayed in FR/EN. The app just displays the string reference. *@
-    <label>TEST SMO:</label>
-    <label>Titre page : @Localizer["CreatProductTitle"]</label>
-    <label>Libellé champs: @Localizer["Price"]</label>
-    <label>msg erreur MissingPrice : @Localizer["MissingPrice"]</label>
-    <label>msg erreur PriceNotANumber : @Localizer["PriceNotANumber"]</label>
-    <label>msg erreur PriceNotGreaterThanZero : @Localizer["PriceNotGreaterThanZero"]</label>
+    <label>(DEBUG SMO) </label>
+    <label>- Titre page : @Localizer["CreatProductTitle"]</label>
+    <label>- Libellé champs: @Localizer["Price"]</label>
+    <label>- msg MissingPrice ==> @Localizer["MissingPrice"]</label>
+    <label>- msg PriceNotANumber ==> @Localizer["PriceNotANumber"]</label>
+    <label>- msg PriceNotGreaterThanZero ==> @Localizer["PriceNotGreaterThanZero"]</label>
 </div>
 <form asp-action="Create" method="post">
     <div class="mb-3 col-6">        
