@@ -10,7 +10,7 @@ using Xunit;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {
-    // Arrange.
+    // UTESTO1(SMO)
     // private readonly IConfiguration _configuration;
     // private readonly IStringLocalizer<ProductService> _localizer;
 
@@ -33,7 +33,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             Assert.Equal(1, 1);
         }
 
-        // TODO write test methods to ensure a correct coverage of all possibilities
+
 
         /* Code Help for adding test method
          * 
@@ -60,10 +60,22 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 */
 
+        // TODO write test methods to ensure a correct coverage of all possibilities
+        /// <summary>
+        /// Unit test of saving a new product
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>UNIT TEST 001(SMO)</remarks>
         [Fact]
         public void SaveNewProduct()
         {
+            // Arrange
 
+            // Act
+            // Product creation
+
+            // Assert
+            // Check product created
         }
     }
 }
