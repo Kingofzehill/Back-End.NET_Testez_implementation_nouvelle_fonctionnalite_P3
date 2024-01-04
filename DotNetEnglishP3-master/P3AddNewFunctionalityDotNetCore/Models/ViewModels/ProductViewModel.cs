@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using System;
+using System.Collections.Generic;
 // UPD02(SMO) : DataAnnotations support
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
+using P3AddNewFunctionalityDotNetCore.Controllers;
+
 
 namespace P3AddNewFunctionalityDotNetCore.Models.ViewModels
 {
