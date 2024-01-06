@@ -51,10 +51,12 @@
         @* @Html.ValidationMessageFor(model => model.Price) *@
         @* UPD02-TEST(SMO): test of displaying string from resource file (bug issue :
         error message not displayed in FR/EN. The app just displays the string reference. *@
-        <label class="text-danger">TEST error messages display 01 :
+        <label class="text-danger">
+            TEST Price error messages display 01 :
             @Html.ValidationMessageFor(model => model.Price) 
         </label>
-        <label class="text-danger">TEST error messages display 02 :
+        <label class="text-danger">
+            TEST Price error messages display 02 :
             @Html.ValidationMessage("Price","*")
         </label>
     </div>
