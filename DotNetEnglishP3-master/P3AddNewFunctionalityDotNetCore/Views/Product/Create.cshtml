@@ -1,27 +1,27 @@
-﻿@using P3AddNewFunctionalityDotNetCore.Models.ViewModels
-@model P3AddNewFunctionalityDotNetCore.Models.ViewModels.ProductViewModel
+﻿@model P3AddNewFunctionalityDotNetCore.Models.ViewModels.ProductViewModel
 @{
     ViewData["Title"] = Localizer["CreatProductTitle"];
     Layout = "_AdminLayout";
 }
-@* UPD02(SMO) : add viewBag display. <h3>@ViewBag.Result</h3> *@
+
 <div asp-validation-summary="All" class="text-danger">
-    @* UPD02-TEST(SMO) : test of displaying string from resource file (bug issue : 
-    error message not displayed in FR/EN. The app just displays the string reference. *@
+    @* UPD004(SMO) : deactivate debug
+    Test of displaying string from resource file (bug issue :
+    error message not displayed in FR/EN. The app just displays the string reference. 
     <label>(DEBUG SMO) </label>
     <label>- Titre page : @Localizer["CreatProductTitle"]</label>
     <label>- Libellé champs: @Localizer["Price"]</label>
     <label>- msg MissingPrice ==> @Localizer["MissingPrice"]</label>
     <label>- msg PriceNotANumber ==> @Localizer["PriceNotANumber"]</label>
-    <label>- msg PriceNotGreaterThanZero ==> @Localizer["PriceNotGreaterThanZero"]</label>
+    <label>- msg PriceNotGreaterThanZero ==> @Localizer["PriceNotGreaterThanZero"]</label>*@
 </div>
 <form asp-action="Create" method="post">
     <div class="mb-3 col-6">        
         <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control" />
-        @* UPD02(SMO) : Client side validation error message *@
-        @* UPD02-TEST(SMO): correct syntax for cshtml ==> *@
+        @* UPD004(SMO) : Client side validation error message *@
+        @* UPD004(SMO) : correct syntax for cshtml ==> *@
         <span asp-validation-for="Name" class="text-danger"></span>
-        @* UPD02-TEST(SMO): syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span> *@
+        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span> *@
         
         
         @* UPD02-TEST(SMO): Syntax label, input and span tag correct syntax for displaying data information and error messages
@@ -46,11 +46,11 @@
     </div>
     <div class="mb-3 col-4">
         <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control" />
-        @* UPD02(SMO) : Client side validation error message *@
-        <span class="text-danger field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span>
-        @* @Html.ValidationMessageFor(model => model.Price) *@
-        @* UPD02-TEST(SMO): test of displaying string from resource file (bug issue :
-        error message not displayed in FR/EN. The app just displays the string reference. *@
+        @* UPD004(SMO) : Client side validation error message *@
+        @* UPD004(SMO) : correct syntax for cshtml ==> *@
+        <span asp-validation-for="Price" class="text-danger"></span>
+        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span> *@
+        @* UPD004(SMO) : deactivate debug 
         <label class="text-danger">
             TEST Price error messages display 01 :
             @Html.ValidationMessageFor(model => model.Price) 
@@ -58,16 +58,17 @@
         <label class="text-danger">
             TEST Price error messages display 02 :
             @Html.ValidationMessage("Price","*")
-        </label>
+        </label> *@
     </div>
     <div class="mb-3 col-8">        
         <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control" />        
     </div>
     <div class="mb-3 col-4">
-        @* UPD02(SMO) : Client side validation error message *@
+        @* UPD004(SMO) : Client side validation error message *@
+        @* UPD004(SMO) : correct syntax for cshtml ==> *@
         <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control" />
-        <span class="text-danger field-validation-valid" data-valmsg-for="Stock" data-valmsg-replace="true"></span>
-        @*@Html.ValidationMessageFor(model => model.Stock)*@
+        <span asp-validation-for="Stock" class="text-danger"></span>
+        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Stock" data-valmsg-replace="true"></span> *@
     </div>
     <div class="mb-3col-8">        
         <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control" />        

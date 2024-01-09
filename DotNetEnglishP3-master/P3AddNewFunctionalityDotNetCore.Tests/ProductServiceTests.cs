@@ -62,7 +62,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         // TODO write test methods to ensure a correct coverage of all possibilities
         /// <summary>
-        /// Unit test of saving a new product
+        /// TEST: Save a product with expected fields required 
+        /// This test method doesn't test fields data annotation, only product save.
         /// </summary>
         /// <returns></returns>
         /// <remarks>UNIT TEST 001(SMO)</remarks>
@@ -70,12 +71,17 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         public void SaveNewProduct()
         {
             // Arrange
+                // DB Connection
+                // Instanciation Product 
 
             // Act
-            // Product creation
+                // Product save
 
             // Assert
-            // Check product created
+                // Check product created
+
+            // Clean UP 
+                // Delete created product
         }
     }
 }
