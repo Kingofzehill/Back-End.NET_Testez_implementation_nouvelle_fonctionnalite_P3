@@ -177,7 +177,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : MissingStock.";
-                product.Price = 1.0;
+                product.Price = "1.0";
 
                 // Act ==> fill required fields and set Stock to null                
                 product.Stock = null;
@@ -225,6 +225,29 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));                
             }
 
+            /// <summary>
+            /// Unit test: product Price doesn't allow 0 value.
+            /// on product (ProductViewModel class) creation.
+            /// </summary>
+            /// <remarks>Test if Price DataAnnotations are applied.</remarks>
+            /// <remarks>UT_TEST005(SMO)</remarks>
+            [Fact]
+            public void TestProductPriceNotGreaterThanZero()
+            {
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+                product.Name = "Unit Test Product : PriceNotGreaterThanZero.";
+                product.Stock = "1";
+
+                // Act
+                product.Price = "0.0";
+
+                // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("PriceNotGreaterThanZero", GetFirstErrorMessage(product));                
+            }
 
             // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
             // additional unit tests not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
