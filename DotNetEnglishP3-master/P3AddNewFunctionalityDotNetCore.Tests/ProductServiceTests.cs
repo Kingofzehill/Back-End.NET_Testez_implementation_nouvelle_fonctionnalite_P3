@@ -9,6 +9,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System;
+using P3AddNewFunctionalityDotNetCore.Models.Entities;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {   
@@ -133,6 +134,13 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("MissingName", GetFirstErrorMessage(product));
+
+                //Act ==> Single space not allowed.
+                product.Name = " ";
+
+                // Assert
+                Assert.False(ValidateModel(product));
+                Assert.Equal("MissingName", GetFirstErrorMessage(product));
             }
 
             /// <summary>
@@ -180,6 +188,41 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("MissingStock", GetFirstErrorMessage(product));
             }
+
+            /// <summary>
+            /// Unit test: product Price allow decimal value with dot as decimal separator 
+            /// on product (ProductViewModel class) creation.
+            /// </summary>
+            /// <remarks>Test if Price DataAnnotations are applied.</remarks>
+            /// <remarks>UT_TEST004(SMO)</remarks>
+            [Fact]
+            public void TestProductPriceNotANumber()
+            {
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+
+                // Act ==> test uncorrect price format.
+                product.Name = "Unit Test Product : missing price.";
+                product.Stock = "1";
+                product.Price = 1.0;                
+
+                // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
+
+                // Act ==> test additionnal uncorrect price format.
+                product.Price = Convert.ToDouble(".0");
+                product.Price = Convert.ToDouble("1,0");
+                product.Price = Convert.ToDouble(",0");
+                // No need to test string for Price as it is a double datatype field. 
+
+                // Assert
+                Assert.False(ValidateModel(product));
+                Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
+            }
+
 
             // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
             // additional unit tests not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
