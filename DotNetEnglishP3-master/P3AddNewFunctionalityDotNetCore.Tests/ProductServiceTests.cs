@@ -336,33 +336,51 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// </summary>
             /// <remarks>Test if StringLength (DataAnnotations) is set for Description field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
+            /// <remarks>UT_TEST009(SMO)</remarks>
             [Fact]
             public void TestProductMaxDescriptionLength()
             {
-                // Not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
-                // Arrange
+                // *** Not requested by Louis specification ***. For learning purpose, fluent assertions and test code coverage evaluation.
 
-                // Act
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+                product.Price = "1.0";
+                product.Stock = "1";
 
+                // Act ==> test 220 caracters.
+                product.Name = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
                 // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("MaxDescriptionLength", GetFirstErrorMessage(product));
             }
 
             /// <summary>
-            /// Unit test: product Details length can't be more than 100 caracters.
+            /// Unit test: product Details length can't be more than 400 caracters.
             /// </summary>
             /// <remarks>Test if StringLength (DataAnnotations) is set for Details field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
+            /// <remarks>UT_TEST010(SMO)</remarks>
             [Fact]
             public void TestProductMaxDetailsLength()
             {
-                // Not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
-                // Arrange
+                // *** Not requested by Louis specification ***. For learning purpose, fluent assertions and test code coverage evaluation.
 
-                // Act
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+                product.Price = "1.0";
+                product.Stock = "1";
 
+                // Act ==> test 420 caracters.
+                product.Name = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
                 // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("MaxDetailsLength", GetFirstErrorMessage(product));
             }
 
         } // end ProductViewModelValidationTest class
