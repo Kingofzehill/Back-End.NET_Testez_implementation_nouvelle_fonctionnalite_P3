@@ -124,7 +124,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
-                product.Price = 1.0; // Old: product.Price = "10.0";
+                product.Price = "1.0"; // Old: product.Price = "10.0";
                 product.Stock = "1";
 
                 // Act ==> fill required fields and set Name to null
@@ -247,6 +247,30 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("PriceNotGreaterThanZero", GetFirstErrorMessage(product));                
+            }
+
+            /// <summary>
+            /// Unit test: product Stock doesn't allow 0 value.
+            /// on product (ProductViewModel class) creation.
+            /// </summary>
+            /// <remarks>Test if Stock DataAnnotations are applied.</remarks>
+            /// <remarks>UT_TEST006(SMO)</remarks>
+            [Fact]
+            public void TestProductStockNotGreaterThanZero()
+            {
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+                product.Name = "Unit Test Product : StockNotGreaterThanZero.";
+                product.Price = "1.0";
+
+                // Act
+                product.Stock = "0";
+
+                // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
             }
 
             // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
