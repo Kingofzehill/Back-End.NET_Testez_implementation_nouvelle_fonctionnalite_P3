@@ -8,6 +8,7 @@ using Xunit;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
+using System;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {   
@@ -121,16 +122,44 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
+
                 // Act ==> fill required fields and set Name to null
                 product.Name = null;
                 product.Price = 10.0; // Old: product.Price = "10.0";
                 product.Stock = "1";
+
                 // Assert
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("MissingName", GetFirstErrorMessage(product));
             }
+
+            /// <summary>
+            /// Unit test: product Price can't be empty on product (ProductViewModel class) creation.
+            /// </summary>
+            /// <remarks>Test if Price field is set as a required field (DataAnnotations).</remarks>
+            /// <remarks>UT_TEST002(SMO)</remarks>
+            [Fact]
+            public void TestProductMissingPrice()
+            {
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+
+                // Act ==> fill required fields and set Price to null
+                product.Name = "Unit Test Product : missing price.";
+                product.Price = null; 
+                product.Stock = "1";
+
+                // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("MissingPrice", GetFirstErrorMessage(product));
+            }
+
+            // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
+            // additional unit tests not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
 
             /// <summary>
             /// Unit test: product Name length can't be more than 100 caracters.
@@ -185,37 +214,9 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         } // end ProductViewModelValidationTest class
 
-
-
-
-
-        /* Code Help for adding test method
-         * 
-         * DB Connection :
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json")
-                        .Build();
-                    var builder = new DbContextOptionsBuilder<AppIdentityDbContext>();
-                    var connectionString = configuration.GetConnectionString("P3Identity");
-                    builder.UseSqlServer(connectionString);
-                    return new AppIdentityDbContext(builder.Options, configuration);
-
-
-            builder.Services.AddDbContext<P3Referential>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("P3Referential")));
-
-            builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("P3Identity")));
-
-            builder.Services.AddDefaultIdentity<IdentityUser>()
-            .AddEntityFrameworkStores<AppIdentityDbContext>()
-            .AddDefaultTokenProviders();
-
-                */
-
-
-
+        /// <summary>
+        /// Contains integration tests for ProductViewModel.
+        /// </summary>
         public class IntegrationTests
         {
             /// <summary>
@@ -223,22 +224,49 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// This test method doesn't test fields data annotation, only product save.
             /// </summary>
             /// <returns></returns>
-            /// <remarks>UNIT TEST 001(SMO)</remarks>
+            /// <remarks>IT_TEST 001(SMO)</remarks>
             [Fact]
-        public void SaveNewProduct()
-        {
-            // Arrange
+            public void SaveNewProduct()
+            {
+                // Arrange
                 // DB Connection
                 // Instanciation Product 
 
-            // Act
+                // Act
                 // Product save
 
-            // Assert
+                // Assert
                 // Check product created
 
-            // Clean UP 
+                // Clean UP 
                 // Delete created product
-        }
+            }
+        } // end IntegrationTests class
+
+        /* Code Help for adding test method
+         * 
+         * DB Connection :
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("appsettings.json")
+                            .Build();
+                        var builder = new DbContextOptionsBuilder<AppIdentityDbContext>();
+                        var connectionString = configuration.GetConnectionString("P3Identity");
+                        builder.UseSqlServer(connectionString);
+                        return new AppIdentityDbContext(builder.Options, configuration);
+
+
+                builder.Services.AddDbContext<P3Referential>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("P3Referential")));
+
+                builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("P3Identity")));
+
+                builder.Services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
+         *
+        */
+
     }
 }
