@@ -125,7 +125,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Act ==> fill required fields and set Name to null
                 product.Name = null;
-                product.Price = 10.0; // Old: product.Price = "10.0";
+                product.Price = 1.0; // Old: product.Price = "10.0";
                 product.Stock = "1";
 
                 // Assert
@@ -156,6 +156,29 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("MissingPrice", GetFirstErrorMessage(product));
+            }
+
+            /// <summary>
+            /// Unit test: product Stock can't be empty on product (ProductViewModel class) creation.
+            /// </summary>
+            /// <remarks>Test if Stock field is set as a required field (DataAnnotations).</remarks>
+            /// <remarks>UT_TEST003(SMO)</remarks>
+            [Fact]
+            public void TestProductMissingStock()
+            {
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+
+                // Act ==> fill required fields and set Stock to null
+                product.Name = "Unit Test Product : missing price.";
+                product.Price = 1.0;
+                product.Stock = null;
+
+                // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("MissingStock", GetFirstErrorMessage(product));
             }
 
             // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
