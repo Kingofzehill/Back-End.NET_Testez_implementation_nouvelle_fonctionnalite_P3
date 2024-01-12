@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System;
 using P3AddNewFunctionalityDotNetCore.Models.Entities;
+using System.Globalization;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {   
@@ -123,11 +124,11 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
-
-                // Act ==> fill required fields and set Name to null
-                product.Name = null;
                 product.Price = 1.0; // Old: product.Price = "10.0";
                 product.Stock = "1";
+
+                // Act ==> fill required fields and set Name to null
+                product.Name = null;                
 
                 // Assert
                 // Product model validation should failed and returns false.
@@ -153,12 +154,11 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
-
-                // Act ==> fill required fields and set Price to null
-                product.Name = "Unit Test Product : missing price.";
-                product.Price = null; 
+                product.Name = "Unit Test Product : MissingPrice.";
                 product.Stock = "1";
-
+                // Act ==> fill required fields and set Price to null
+                product.Price = null; 
+                
                 // Assert
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
@@ -176,10 +176,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
-
-                // Act ==> fill required fields and set Stock to null
-                product.Name = "Unit Test Product : missing price.";
+                product.Name = "Unit Test Product : MissingStock.";
                 product.Price = 1.0;
+
+                // Act ==> fill required fields and set Stock to null                
                 product.Stock = null;
 
                 // Assert
@@ -200,27 +200,29 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
+                product.Name = "Unit Test Product : PriceNotANumber.";
+                product.Stock = "1";
 
                 // Act ==> test uncorrect price format.
-                product.Name = "Unit Test Product : missing price.";
-                product.Stock = "1";
-                product.Price = 1.0;                
+                product.Price = "A";                
 
                 // Assert
                 // Product model validation should failed and returns false.
-                Assert.False(ValidateModel(product));
+                Assert.False(ValidateModel(product),"'A' value should be forbiden for price.");
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
 
-                // Act ==> test additionnal uncorrect price format.
-                product.Price = Convert.ToDouble(".0");
-                product.Price = Convert.ToDouble("1,0");
-                product.Price = Convert.ToDouble(",0");
-                // No need to test string for Price as it is a double datatype field. 
-
+                // Act ==> additionnals tests of uncorrect price format.                
+                product.Price = ".1";
                 // Assert
-                Assert.False(ValidateModel(product));
+                Assert.False(ValidateModel(product), "'.1' value should be forbiden for price.");
                 Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
+
+                // Act ==> additionnals tests of uncorrect price format.   
+                product.Price = "1,1";
+                // Assert
+                Assert.False(ValidateModel(product), "'1,1' value should be forbiden for price.");
+                Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));                
             }
 
 

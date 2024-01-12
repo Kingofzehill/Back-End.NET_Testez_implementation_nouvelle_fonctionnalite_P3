@@ -74,7 +74,8 @@ namespace P3AddNewFunctionalityDotNetCore.Models.ViewModels
         // UPD02(SMO) : Change Price datatype from string to double.
         // Change string to double datatype for decimal values management in Range control instruction
         */
-        // UT_TEST002(SMO) : set price as nullable for test purpose.
-        public double? Price { get; set; }
+        // UT_TEST004(SMO) : change price datatype from double to string for test purposes
+        //       public double? Price { get; set; }
+        public string Price { get; set; }
     }
 }

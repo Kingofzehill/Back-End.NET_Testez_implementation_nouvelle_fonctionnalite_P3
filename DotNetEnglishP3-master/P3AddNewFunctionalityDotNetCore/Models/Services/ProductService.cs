@@ -42,8 +42,9 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
                     Id = product.Id,
                     Stock = product.Quantity.ToString(),
                     // UPD(SMO) : propage datatype change to double of Price in ProductViewModel
-                    // OLD ==> Price = product.Price.ToString(CultureInfo.InvariantCulture),
-                    Price = product.Price,
+                    // UT_TEST004(SMO) : change price datatype from double to string for test purposes
+                    // OLD ==> Price = product.Price,
+                    Price = product.Price.ToString(CultureInfo.InvariantCulture),
                     Name = product.Name,
                     Description = product.Description,
                     Details = product.Details
@@ -148,9 +149,9 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             {
                 Name = product.Name,
                 // UPD002(SMO) : propage datatype change to double of Price in ProductViewModel
-                // OLD ==> Price = double.Parse(product.Price),
-                // Price = product.Price;
-                Price = double.Parse(product.Price.ToString()),
+                // UT_TEST004(SMO) : change price datatype from double to string for test purposes
+                // OLD ==> Price = double.Parse(product.Price.ToString()),
+                Price = product.Price,
                 Quantity = Int32.Parse(product.Stock),
                 Description = product.Description,
                 Details = product.Details
