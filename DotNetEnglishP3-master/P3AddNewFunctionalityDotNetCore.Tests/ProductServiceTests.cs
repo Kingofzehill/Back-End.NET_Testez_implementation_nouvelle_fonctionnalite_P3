@@ -124,7 +124,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
-                product.Price = "1.0"; // Old: product.Price = "10.0";
+                product.Price = "1.0"; 
                 product.Stock = "1";
 
                 // Act ==> fill required fields and set Name to null
@@ -310,17 +310,25 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// </summary>
             /// <remarks>Test if StringLength (DataAnnotations) is set for Name field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
-            /// /// <remarks>UT_TEST007(SMO)</remarks>
+            /// <remarks>UT_TEST008(SMO)</remarks>
             [Fact]
-            public void TestProductNameLength()
+            public void TestProductMaxNameLength()
             {
-                // Not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
-                // Arrange
+                // *** Not requested by Louis specification ***. For learning purpose, fluent assertions and test code coverage evaluation.
+                
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+                product.Price = "1.0"; 
+                product.Stock = "1";
 
-                // Act
-
+                // Act ==> test 120 caracters.
+                product.Name = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
                 // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product));
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("MaxNameLength", GetFirstErrorMessage(product));
             }
 
             /// <summary>
@@ -329,7 +337,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// <remarks>Test if StringLength (DataAnnotations) is set for Description field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
             [Fact]
-            public void TestProductDescriptionLength()
+            public void TestProductMaxDescriptionLength()
             {
                 // Not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
                 // Arrange
@@ -346,7 +354,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// <remarks>Test if StringLength (DataAnnotations) is set for Details field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
             [Fact]
-            public void TestProductDetailsLength()
+            public void TestProductMaxDetailsLength()
             {
                 // Not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
                 // Arrange
