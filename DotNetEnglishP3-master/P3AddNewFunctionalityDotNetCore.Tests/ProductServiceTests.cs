@@ -208,20 +208,20 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Assert
                 // Product model validation should failed and returns false.
-                Assert.False(ValidateModel(product),"'A' value should be forbiden for price.");
+                Assert.False(ValidateModel(product),"'A' value should be forbiden for Price.");
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
                 Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
 
                 // Act ==> additionnals tests of uncorrect price format.                
                 product.Price = ".1";
                 // Assert
-                Assert.False(ValidateModel(product), "'.1' value should be forbiden for price.");
+                Assert.False(ValidateModel(product), "'.1' value should be forbiden for Price.");
                 Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
 
                 // Act ==> additionnals tests of uncorrect price format.   
                 product.Price = "1,1";
                 // Assert
-                Assert.False(ValidateModel(product), "'1,1' value should be forbiden for price.");
+                Assert.False(ValidateModel(product), "'1,1' value should be forbiden for Price.");
                 Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));                
             }
 
@@ -273,6 +273,35 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
             }
 
+            /// <summary>
+            /// Unit test: product Stock allows only integer value.
+            /// on product (ProductViewModel class) creation.
+            /// </summary>
+            /// <remarks>Test if Stock DataAnnotations are applied.</remarks>
+            /// <remarks>UT_TEST007(SMO)</remarks>
+            [Fact]
+            public void TestProductStockNotAnInteger()
+            {
+                // Arrange ==> see public ProductViewModelValidationTest()
+                // for instantiation of Product (ProductViewModel class)
+                product.Name = "Unit Test Product : StockNotAnInteger.";
+                product.Price = "1.0";
+
+                // Act
+                product.Stock = "A";
+                // Assert
+                // Product model validation should failed and returns false.
+                Assert.False(ValidateModel(product), "'A' value should be forbiden for Stock.");
+                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
+                Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
+
+                // Act
+                product.Stock = "1.1";
+                // Assert                
+                Assert.False(ValidateModel(product), "'1.1' value should be forbiden for Stock.");                
+                Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
+            }
+
             // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
             // additional unit tests not requested by Louis specification. For learning purpose, fluent assertions and test code coverage evaluation.
 
@@ -281,6 +310,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// </summary>
             /// <remarks>Test if StringLength (DataAnnotations) is set for Name field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
+            /// /// <remarks>UT_TEST007(SMO)</remarks>
             [Fact]
             public void TestProductNameLength()
             {
