@@ -409,11 +409,10 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             private readonly IConfiguration _configuration;
             // Provide resource strings for ProductService
             // https://learn.microsoft.com/fr-fr/aspnet/core/fundamentals/localization/make-content-localizable?view=aspnetcore-8.0
-            private readonly IStringLocalizer<ProductService> _localizer; 
+            private readonly IStringLocalizer<ProductService> _localizer;
 
             /// <summary>
-            /// TEST: Save a test product and check if created in database, then delete test record.
-            /// This test method doesn't test fields data annotations (see units tests).
+            /// (integration). Save a test product and check if created in database, then delete test record.            
             /// </summary>
             /// <returns></returns>
             /// <remarks>INT_TEST 001(SMO)</remarks>
@@ -439,36 +438,92 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                     // Instanciation and initialization of a new Product. 
                     ProductViewModel productViewModel = new() { Name = "Product from CREATE integration test: SaveNewProduct", Description = "Description", Details = "Detail", Stock = "1", Price = "150.10" };
 
+                    // Store number of product before new product creation
                     // Await ==> suspend l’évaluation de la méthode async englobante (SaveNewProduct)
                     // jusqu’à ce que l’opération asynchrone représentée par son opérande se termine.
                     // https://learn.microsoft.com/fr-fr/dotnet/csharp/language-reference/operators/await
                     // CountAsync : retourne en asynchrone le nombre d'éléments de Product.
                     // On ne peut avoir plusieurs tâches asyncrhones simultanées, await assure que les
-                    // autres tâches asynchrones dans ce contexte (ctx) sont terminées avant de lancer celle ci.
+                    // autres tâches asynchrones dans ce contexte (ctx) sont terminées avant de lancer celle ci.                    
                     int count = await ctx.Product.CountAsync();
 
                     // Act
-                    // Execute la méthode Create de productViewModel qui appelle SaveProduct.
+                    // Product creation test (create method of productViewModel class (which calls SaveProduct)).
                     productController.Create(productViewModel);
 
                     // Assert
-                    // Ok si le nombre de produits a augmenté de 1.
+                    // Ok if product number +1 after product creation.
                     Assert.Equal(count + 1, ctx.Product.Count());
 
-                    // Ok si le produit est trouvé
+                    // Ok if product found. 
                     // LinQ requête ==> https://learn.microsoft.com/fr-fr/dotnet/csharp/linq/get-started/introduction-to-linq-queries
                     var product = await ctx.Product.Where(x => x.Name == "Product from CREATE integration test: SaveNewProduct").FirstOrDefaultAsync();
                     Assert.NotNull(product);
 
-                    // Nettoie la BASE DE DONNÉES (Comme on utilise Xunit et non MS TEST, on ne peut pas
-                    // utiliser l'attribut TestCleanUp pour s'assurer de la suppression des enregistrements de tests).
+                    // Clean DB.
+                    // Comme on utilise Xunit et non MS TEST, on ne peut pas utiliser l'attribut TestCleanUp
+                    // pour s'assurer de la suppression des enregistrements de tests).
                     ctx.Product.Remove(product);
+                    // Saves changes in DB.
                     // Await ==> suspend l’évaluation de la méthode async englobante
                     // SaveChangesAsync : sauve les changements dans le contexte de la BDD après avoir
                     // checké qu'il n'y a pas d'opérations en cours dans le même contexte. 
                     await ctx.SaveChangesAsync();
                 }
             }
+
+            /// <summary>
+            /// (integration) Test delete a new created product and don't find it in the DB anymore., then delete test record.           
+            /// </summary>
+            /// <returns></returns>
+            /// <remarks>INT_TEST 002(SMO)</remarks>
+            /// Programmation asynchrone (async Task) https://learn.microsoft.com/fr-fr/dotnet/csharp/asynchronous-programming/async-scenarios
+            [Fact]
+            public async Task DeleteProduct()
+            {
+                // Arrange
+                // P3Referential Database connection.
+                var options = new DbContextOptionsBuilder<P3Referential>()
+                    .UseSqlServer("Server=EHODFURY\\SERVEURSQL2022;Database=P3Referential-2f561d3b-493f-46fd-83c9-6e2643e7bd0a;Trusted_Connection=True;MultipleActiveResultSets=true")
+                    .Options;
+
+                using (var ctx = new P3Referential(options, _configuration))
+                {
+                    // Inject necessaries dependancies.
+                    LanguageService languageService = new();
+                    Cart cart = new();
+                    ProductRepository productRepository = new(ctx);
+                    OrderRepository orderRepository = new(ctx);
+                    ProductService productService = new(cart, productRepository, orderRepository, _localizer);
+                    ProductController productController = new(productService, languageService);
+
+                    // Instanciation and initialization of a new Product. 
+                    ProductViewModel productViewModel = new() { Name = "Product from DELETE integration test", Description = "Description", Details = "Detail", Stock = "1", Price = "150" };
+
+                    // Store number of product before new product creation
+                    int count = await ctx.Product.CountAsync();
+
+                    // Product creation (create method of productViewModel class (which calls SaveProduct)).
+                    productController.Create(productViewModel);
+
+                    // Check if found and store in product var
+                    var product = await ctx.Product.Where(x => x.Name == "Product from DELETE integration test").FirstOrDefaultAsync();
+
+                    // Act
+                    // Product delete test (call DeleteProduct method from productController class)
+                    // which remove product from repository and cart
+                    productController.DeleteProduct(product.Id);
+
+                    // Assert
+                    // Test if number of products is the same before creation and
+                    // after delete of created test product.
+                    Assert.Equal(count, ctx.Product.Count());
+                    // Test if product delete is not found anymore.
+                    var searchProductAgain = await ctx.Product.Where(x => x.Name == "Product from DELETE integration test").FirstOrDefaultAsync();
+                    Assert.Null(searchProductAgain);
+                }
+            }
+
         } // end IntegrationTests class
 
         /* Code Help for adding test method
