@@ -1,16 +1,21 @@
-﻿using P3AddNewFunctionalityDotNetCore.Models;
+﻿using System;
+using System.Globalization;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Routing;
+using P3AddNewFunctionalityDotNetCore.Models;
 using P3AddNewFunctionalityDotNetCore.Models.ViewModels;
 using P3AddNewFunctionalityDotNetCore.Models.Services;
 using P3AddNewFunctionalityDotNetCore.Models.Repositories;
-using System.ComponentModel.DataAnnotations;
-using Xunit;
-
-using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Routing;
-using System.Collections.Generic;
-using System;
 using P3AddNewFunctionalityDotNetCore.Models.Entities;
-using System.Globalization;
+using P3AddNewFunctionalityDotNetCore.Controllers;
+using P3AddNewFunctionalityDotNetCore.Data;
+using Xunit;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {   
@@ -19,7 +24,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
     /// </summary>
     public class ProductServiceTests
     {
-
+        /* 
         /// <summary>
         /// Take this test method as a template to write your test method.
         /// A test method must check if a definite method does its job:
@@ -36,6 +41,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             // Assert
             Assert.Equal(1, 1);
         }
+        */
 
         // TODO write test methods to ensure a correct coverage of all possibilities
 
@@ -50,6 +56,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             // UT_TEST001(SMO) : ProductViewModel object instantiation.
             public ProductViewModelValidationTest()
             {
+                // Arrange
                 product = new ProductViewModel();
             }
 
@@ -390,27 +397,77 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         /// </summary>
         public class IntegrationTests
         {
+            // Arrange
+
+            // IConfiguration : représente un ensemble de propriétés de configuration
+            // d’application de clé/valeur.            
+            // Le type IConfiguration fournit un affichage unifié des données de configuration.
+            // Le fournisseur de configuration JSON permet de mapper les fichiers appsettings.json
+            // avec des objets .NET et il est utilisé avec l’injection de dépendances ==>
+            // fournir une instance valide lors de l'injection.
+            // https://learn.microsoft.com/fr-fr/dotnet/core/extensions/configuration
+            private readonly IConfiguration _configuration;
+            // Provide resource strings for ProductService
+            // https://learn.microsoft.com/fr-fr/aspnet/core/fundamentals/localization/make-content-localizable?view=aspnetcore-8.0
+            private readonly IStringLocalizer<ProductService> _localizer; 
+
             /// <summary>
-            /// TEST: Save a product with expected fields required 
-            /// This test method doesn't test fields data annotation, only product save.
+            /// TEST: Save a test product and check if created in database, then delete test record.
+            /// This test method doesn't test fields data annotations (see units tests).
             /// </summary>
             /// <returns></returns>
-            /// <remarks>IT_TEST 001(SMO)</remarks>
+            /// <remarks>INT_TEST 001(SMO)</remarks>
             [Fact]
-            public void SaveNewProduct()
+            public async Task SaveNewProduct()
             {
                 // Arrange
-                // DB Connection
-                // Instanciation Product 
+                // P3Referential Database connection.
+                var options = new DbContextOptionsBuilder<P3Referential>()
+                    .UseSqlServer("Server=.;Database=P3Referential-2f561d3b-493f-46fd-83c9-6e2643e7bd0a;Trusted_Connection=True;MultipleActiveResultSets=true")
+                    .Options;
 
-                // Act
-                // Product save
+                using (var ctx = new P3Referential(options, _configuration))
+                {
+                    // Inject necessaries dependancies.
+                    LanguageService languageService = new();
+                    Cart cart = new();
+                    ProductRepository productRepository = new(ctx);
+                    OrderRepository orderRepository = new(ctx);
+                    ProductService productService = new(cart, productRepository, orderRepository, _localizer);
+                    ProductController productController = new(productService, languageService);
 
-                // Assert
-                // Check product created
+                    // Instanciation and initialization of a new Product. 
+                    ProductViewModel productViewModel = new() { Name = "Product from CREATE integration test: SaveNewProduct", Description = "Description", Details = "Detail", Stock = "1", Price = "150.10" };
 
-                // Clean UP 
-                // Delete created product
+                    // Await ==> suspend l’évaluation de la méthode async englobante (SaveNewProduct)
+                    // jusqu’à ce que l’opération asynchrone représentée par son opérande se termine.
+                    // https://learn.microsoft.com/fr-fr/dotnet/csharp/language-reference/operators/await
+                    // CountAsync : retourne en asynchrone le nombre d'éléments de Product.
+                    // On ne peut avoir plusieurs tâches asyncrhones simultanées, await assure que les
+                    // autres tâches asynchrones dans ce contexte (ctx) sont terminées avant de lancer celle ci.
+                    int count = await ctx.Product.CountAsync();
+
+                    // Act
+                    // Execute la méthode Create de productViewModel qui appelle SaveProduct.
+                    productController.Create(productViewModel);
+
+                    // Assert
+                    // Ok si le nombre de produits a augmenté de 1.
+                    Assert.Equal(count + 1, ctx.Product.Count());
+
+                    // Ok si le produit est trouvé
+                    // LinQ requête ==> https://learn.microsoft.com/fr-fr/dotnet/csharp/linq/get-started/introduction-to-linq-queries
+                    var product = await ctx.Product.Where(x => x.Name == "Product from CREATE integration test: SaveNewProduct").FirstOrDefaultAsync();
+                    Assert.NotNull(product);
+
+                    // Nettoie la BASE DE DONNÉES (Comme on utilise Xunit et non MS TEST, on ne peut pas
+                    // utiliser l'attribut TestCleanUp pour s'assurer de la suppression des enregistrements de tests).
+                    ctx.Product.Remove(product);
+                    // Await ==> suspend l’évaluation de la méthode async englobante
+                    // SaveChangesAsync : sauve les changements dans le contexte de la BDD après avoir
+                    // checké qu'il n'y a pas d'opérations en cours dans le même contexte. 
+                    await ctx.SaveChangesAsync();
+                }
             }
         } // end IntegrationTests class
 
