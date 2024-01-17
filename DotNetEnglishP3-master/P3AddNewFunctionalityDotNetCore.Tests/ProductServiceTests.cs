@@ -16,7 +16,10 @@ using P3AddNewFunctionalityDotNetCore.Models.Entities;
 using P3AddNewFunctionalityDotNetCore.Controllers;
 using P3AddNewFunctionalityDotNetCore.Data;
 using Xunit;
+// UPD005 : FluentAssertions tests. 
+using FluentAssertions;
 using Castle.Components.DictionaryAdapter.Xml;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {   
@@ -329,7 +332,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// </summary>
             /// <remarks>Test if StringLength (DataAnnotations) is set for Name field.</remarks>
             /// <remarks>Unit test not required by Louis project specifications.</remarks>
-            /// <remarks>UT_TEST008(SMO)</remarks>
+            /// <remarks>UT_TEST008(SMO)</remarks>            
+            /// <remarks>UPD005(SMO) : FluentAssertions test</remarks>
             [Fact]
             public void TestProductMaxNameLength()
             {
@@ -345,9 +349,14 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Assert
                 // Product model validation should failed and returns false.
-                Assert.False(ValidateModel(product));
-                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("MaxNameLength", GetFirstErrorMessage(product));
+                // UPD005(SMO) : FluentAssertions test
+                //Assert.False(ValidateModel(product));
+                ValidateModel(product).Should().Be(false);
+
+                // Checks if error message corresponds to the one defined.
+                // UPD005(SMO) : FluentAssertions test
+                //Assert.Equal("MaxNameLength", GetFirstErrorMessage(product));
+                GetFirstErrorMessage(product).Should().Be("MaxNameLength");
             }
 
             /// <summary>
@@ -372,9 +381,13 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Assert
                 // Product model validation should failed and returns false.
-                Assert.False(ValidateModel(product));
-                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("MaxDescriptionLength", GetFirstErrorMessage(product));
+                // UPD005(SMO) : FluentAssertions test
+                //Assert.False(ValidateModel(product));
+                ValidateModel(product).Should().Be(false);
+                // Checks if error message corresponds to the one defined.
+                // UPD005(SMO) : FluentAssertions test
+                //Assert.Equal("MaxDescriptionLength", GetFirstErrorMessage(product));
+                GetFirstErrorMessage(product).Should().Be("MaxDescriptionLength");
             }
 
             /// <summary>
@@ -399,9 +412,13 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Assert
                 // Product model validation should failed and returns false.
-                Assert.False(ValidateModel(product));
-                // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("MaxDetailsLength", GetFirstErrorMessage(product));
+                // UPD005(SMO) : FluentAssertions test
+                //Assert.False(ValidateModel(product));
+                ValidateModel(product).Should().Be(false);
+                // Checks if error message corresponds to the one defined.
+                // UPD005(SMO) : FluentAssertions test
+                // Assert.Equal("MaxDetailsLength", GetFirstErrorMessage(product));
+                GetFirstErrorMessage(product).Should().Be("MaxDetailsLength");
             }
 
         } // end ProductViewModelValidationTest class
@@ -431,7 +448,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// <returns></returns>
             /// <remarks>INT_TEST 001(SMO)</remarks>
             [Fact]
-            public async Task SaveNewProduct()
+            public async Task TestSaveNewProduct()
             {
                 // Arrange
                 // P3Referential Database connection.
@@ -493,7 +510,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             /// <remarks>INT_TEST 002(SMO)</remarks>
             /// Programmation asynchrone (async Task) https://learn.microsoft.com/fr-fr/dotnet/csharp/asynchronous-programming/async-scenarios
             [Fact]
-            public async Task DeleteProduct()
+            public async Task TestDeleteProduct()
             {
                 // Arrange
                 // P3Referential Database connection.
