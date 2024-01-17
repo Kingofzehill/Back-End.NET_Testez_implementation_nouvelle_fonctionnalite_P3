@@ -16,6 +16,7 @@ using P3AddNewFunctionalityDotNetCore.Models.Entities;
 using P3AddNewFunctionalityDotNetCore.Controllers;
 using P3AddNewFunctionalityDotNetCore.Data;
 using Xunit;
+using Castle.Components.DictionaryAdapter.Xml;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {   
@@ -46,15 +47,15 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         // TODO write test methods to ensure a correct coverage of all possibilities
 
         /// <summary>
-        /// Contains unit tests for ProductViewModel validation.
+        /// Contains unit tests for ProductViewModel.
         /// </summary>
-        public class ProductViewModelValidationTest
+        public class UnitTest
         {
             // UT_TEST001(SMO) : ProductViewModel objet.
             private ProductViewModel product;
 
-            // UT_TEST001(SMO) : ProductViewModel object instantiation.
-            public ProductViewModelValidationTest()
+            // UT_TEST001(SMO) : ProductViewModel object instantiation (builder).
+            public UnitTest()
             {
                 // Arrange
                 product = new ProductViewModel();
@@ -141,14 +142,16 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("MissingName", GetFirstErrorMessage(product));
+                Assert.Equal("Veuillez saisir un nom.", GetFirstErrorMessage(product));
+                //Assert.Equal("MissingName", GetFirstErrorMessage(product));
 
                 //Act ==> Single space not allowed.
                 product.Name = " ";
 
                 // Assert
                 Assert.False(ValidateModel(product));
-                Assert.Equal("MissingName", GetFirstErrorMessage(product));
+                Assert.Equal("Veuillez saisir un nom.", GetFirstErrorMessage(product));
+                //Assert.Equal("MissingName", GetFirstErrorMessage(product));
             }
 
             /// <summary>
@@ -170,7 +173,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("MissingPrice", GetFirstErrorMessage(product));
+                Assert.Equal("Veuillez saisir un prix.", GetFirstErrorMessage(product));
+                //Assert.Equal("MissingPrice", GetFirstErrorMessage(product));
             }
 
             /// <summary>
@@ -193,7 +197,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("MissingStock", GetFirstErrorMessage(product));
+                Assert.Equal("Veuillez saisir un stock.", GetFirstErrorMessage(product));
+                //Assert.Equal("MissingStock", GetFirstErrorMessage(product));
             }
 
             /// <summary>
@@ -217,19 +222,22 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product),"'A' value should be forbiden for Price.");
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
+                Assert.Equal("La valeur saisie pour le prix doit être un nombre.", GetFirstErrorMessage(product));
+                //Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
 
                 // Act ==> additionnals tests of uncorrect price format.                
                 product.Price = ".1";
                 // Assert
                 Assert.False(ValidateModel(product), "'.1' value should be forbiden for Price.");
-                Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
+                Assert.Equal("La valeur saisie pour le prix doit être un nombre.", GetFirstErrorMessage(product));
+                //Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));
 
                 // Act ==> additionnals tests of uncorrect price format.   
                 product.Price = "1,1";
                 // Assert
                 Assert.False(ValidateModel(product), "'1,1' value should be forbiden for Price.");
-                Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));                
+                Assert.Equal("La valeur saisie pour le prix doit être un nombre.", GetFirstErrorMessage(product));
+                //Assert.Equal("PriceNotANumber", GetFirstErrorMessage(product));                
             }
 
             /// <summary>
@@ -253,7 +261,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("PriceNotGreaterThanZero", GetFirstErrorMessage(product));                
+                Assert.Equal("Le prix doit être supérieur à zéro.", GetFirstErrorMessage(product));
+                //Assert.Equal("PriceNotGreaterThanZero", GetFirstErrorMessage(product));                
             }
 
             /// <summary>
@@ -277,7 +286,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product));
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
+                Assert.Equal("Le stock doit être supérieur à zéro.", GetFirstErrorMessage(product));
+                //Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
             }
 
             /// <summary>
@@ -300,13 +310,15 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Product model validation should failed and returns false.
                 Assert.False(ValidateModel(product), "'A' value should be forbiden for Stock.");
                 // Checks if error message resource name corresponds to the one definied in [Required] DataAnnotations.
-                Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
+                //Assert.Equal("StockNotAnInteger", GetFirstErrorMessage(product));
+                Assert.Equal("La valeur saisie pour le stock doit être un entier.", GetFirstErrorMessage(product));
 
                 // Act
                 product.Stock = "1.1";
                 // Assert                
-                Assert.False(ValidateModel(product), "'1.1' value should be forbiden for Stock.");                
-                Assert.Equal("StockNotGreaterThanZero", GetFirstErrorMessage(product));
+                Assert.False(ValidateModel(product), "'1.1' value should be forbiden for Stock.");
+                Assert.Equal("La valeur saisie pour le stock doit être un entier.", GetFirstErrorMessage(product));
+                //Assert.Equal("StockNotAnInteger", GetFirstErrorMessage(product));
             }
 
             // Ctrl+M+H (ctrl+M+U to remove) : hide the portion of selected code.
@@ -351,11 +363,12 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
+                product.Name = "Unit Test Product : MaxDescriptionLength.";
                 product.Price = "1.0";
                 product.Stock = "1";
 
                 // Act ==> test 220 caracters.
-                product.Name = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
+                product.Description = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
                 // Assert
                 // Product model validation should failed and returns false.
@@ -377,11 +390,12 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
                 // Arrange ==> see public ProductViewModelValidationTest()
                 // for instantiation of Product (ProductViewModel class)
+                product.Name = "Unit Test Product : MaxDetailsLength.";
                 product.Price = "1.0";
                 product.Stock = "1";
 
                 // Act ==> test 420 caracters .
-                product.Name = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
+                product.Details = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
                 // Assert
                 // Product model validation should failed and returns false.
@@ -436,7 +450,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                     ProductController productController = new(productService, languageService);
 
                     // Instanciation and initialization of a new Product. 
-                    ProductViewModel productViewModel = new() { Name = "Product from CREATE integration test: SaveNewProduct", Description = "Description", Details = "Detail", Stock = "1", Price = "150.10" };
+                    ProductViewModel productViewModel = new() { Name = "Product from CREATE integration test: SaveNewProduct", Description = "Description", Details = "Detail", Stock = "1", Price = "150" };
 
                     // Store number of product before new product creation
                     // Await ==> suspend l’évaluation de la méthode async englobante (SaveNewProduct)
@@ -484,7 +498,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 // Arrange
                 // P3Referential Database connection.
                 var options = new DbContextOptionsBuilder<P3Referential>()
-                    .UseSqlServer("Server=EHODFURY\\SERVEURSQL2022;Database=P3Referential-2f561d3b-493f-46fd-83c9-6e2643e7bd0a;Trusted_Connection=True;MultipleActiveResultSets=true")
+                    .UseSqlServer("Server=.;Database=P3Referential-2f561d3b-493f-46fd-83c9-6e2643e7bd0a;Trusted_Connection=True;MultipleActiveResultSets=true")
                     .Options;
 
                 using (var ctx = new P3Referential(options, _configuration))
@@ -498,7 +512,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                     ProductController productController = new(productService, languageService);
 
                     // Instanciation and initialization of a new Product. 
-                    ProductViewModel productViewModel = new() { Name = "Product from DELETE integration test", Description = "Description", Details = "Detail", Stock = "1", Price = "150" };
+                    ProductViewModel productViewModel = new() { Name = "Product from DELETE integration test: DeleteProduct", Description = "Description", Details = "Detail", Stock = "1", Price = "150" };
 
                     // Store number of product before new product creation
                     int count = await ctx.Product.CountAsync();
@@ -507,7 +521,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                     productController.Create(productViewModel);
 
                     // Check if found and store in product var
-                    var product = await ctx.Product.Where(x => x.Name == "Product from DELETE integration test").FirstOrDefaultAsync();
+                    var product = await ctx.Product.Where(x => x.Name == "Product from DELETE integration test: DeleteProduct").FirstOrDefaultAsync();
 
                     // Act
                     // Product delete test (call DeleteProduct method from productController class)
@@ -525,31 +539,5 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             }
 
         } // end IntegrationTests class
-
-        /* Code Help for adding test method
-         * 
-         * DB Connection :
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json")
-                            .Build();
-                        var builder = new DbContextOptionsBuilder<AppIdentityDbContext>();
-                        var connectionString = configuration.GetConnectionString("P3Identity");
-                        builder.UseSqlServer(connectionString);
-                        return new AppIdentityDbContext(builder.Options, configuration);
-
-
-                builder.Services.AddDbContext<P3Referential>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("P3Referential")));
-
-                builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("P3Identity")));
-
-                builder.Services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
-         *
-        */
-
     }
 }
