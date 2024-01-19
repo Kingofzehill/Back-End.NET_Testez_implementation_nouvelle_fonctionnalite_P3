@@ -1,4 +1,5 @@
-﻿@using P3AddNewFunctionalityDotNetCore.Models.ViewModels
+﻿@using System.Globalization;
+@using P3AddNewFunctionalityDotNetCore.Models.ViewModels
 @model IEnumerable<P3AddNewFunctionalityDotNetCore.Models.ViewModels.ProductViewModel>
 @{
     ViewData["Title"] = Localizer["ProductList"];
@@ -29,8 +30,84 @@
                 <tr>
                     <td>@p.Name</td>
                     <td>@p.Description</td>
-                    <td style="text-align:center">@p.Price</td>
+                    @*UPD006SMO(UPD001) apply currency format to Price. TEMPORARY FIX AS CULTUREINFO is not correctly manage in FR/ES/US.*@
+                    @{
+                        //********* Analyse result : the way found to avoid exception raised proove ********* 
+                        // that culture settings are not correctly managed in the application.
+                        // Decimal separator should be . here but we have to force it to . (was ,)
+                        // Currency symbol should be $ (for CultureInfo("en-US") but ¤ displayed.
+                        // Currency symbol should be € (for CultureInfo("fr-FR") but ¤ displayed.
+                        // "¤" ==> is the default for InvariantInfo.
+                        // =====> **** In order to fix durably the curency format we will have to 
+                        // investigate CultureInfo management in the application 
+                        // depending of the selected language.
+                        // =====> **** we will probably have to check NumberFormatInfo properties at application run
+                        // and on language change for correctly managing currency values.
+                        //      double dPrice = Convert.ToDouble(p.Price); ==> exception raised
+                        //      sPrice = dPrice.ToString("c");
+
+                        // We add try catch for managing high probability of exceptions 
+                        // occuring due to messy CultureInfo management. 
+                        // Catch is empty because not interesting to manage the occured errors.
+                        string sPrice = "";
+                        double dPrice = 0.0;
+                        try
+                        {                           
+                            //string strCulture = CultureInfo.CurrentCulture.Name;
+                            switch (CultureInfo.CurrentCulture.Name)
+                            {
+                                case "fr":
+                                    NumberFormatInfo nfiProviderFr = new CultureInfo("fr-FR", false).NumberFormat;
+                                    // Change Decimalseparator for avoiding exception as Price is stored in DB with dot as decimal separator.
+                                    nfiProviderFr.NumberDecimalSeparator = ".";
+                                    //apply currency format
+                                    sPrice = string.Format(nfiProviderFr, "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
+                                    dPrice = Convert.ToDouble(sPrice, nfiProviderFr);
+                                    //force currency format
+                                    sPrice = dPrice.ToString("c");
+                                    break;
+                                case "es":
+                                    NumberFormatInfo nfiProviderEs = new CultureInfo("es-ES", false).NumberFormat;
+                                    // Change Decimalseparator for avoiding exception as Price is stored in DB with dot as decimal separator.
+                                    nfiProviderEs.NumberDecimalSeparator = ".";
+                                    //apply currency format
+                                    sPrice = string.Format(nfiProviderEs, "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
+                                    dPrice = Convert.ToDouble(sPrice, nfiProviderEs);
+                                    //force currency format
+                                    sPrice = dPrice.ToString("c");
+                                    break;
+                                case "en-US":
+                                    NumberFormatInfo nfiProviderEn = new CultureInfo("en-US", false).NumberFormat;
+                                    // Change Decimalseparator for avoiding exception as Price is stored in DB with dot as decimal separator.
+                                    nfiProviderEn.NumberDecimalSeparator = ".";
+                                    //apply currency format
+                                    sPrice = string.Format(nfiProviderEn, "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
+                                    dPrice = Convert.ToDouble(sPrice, nfiProviderEn);
+                                    //force currency format
+                                    sPrice = dPrice.ToString("c");
+                                    break;
+                                default:
+                                    sPrice = @p.Price;
+                                    break;
+                            }                                                                                                                                       
+                            /* 
+                            sPrice = string.Format(new CultureInfo("fr-FR"), "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
+                            NumberFormatInfo provider = new NumberFormatInfo();
+                            provider.NumberDecimalSeparator = ".";
+                            provider.CurrencySymbol = "€";
+                            dPrice = Convert.ToDouble(sPrice, provider);
+                            sPrice = dPrice.ToString("c");
+                            */
+                        }
+                        catch { }
+                    }
+                    <td style="text-align:center">@sPrice</td>
+                    @*
+                        <td style="text-align:center">@p.Price</td>
+                        <td style="text-align:center">@p.Price.ToString("c")</td>
+                    *@
                     <td style="text-align:center">@p.Stock</td>
+                   
                     <td>
                         <form id="@p.Id" asp-action="AddToCart" asp-controller="Cart" method="post">
                             <input type="hidden" name="id" value="@p.Id" />

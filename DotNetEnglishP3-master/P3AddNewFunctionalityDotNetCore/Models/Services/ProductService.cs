@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient.Server;
 using Microsoft.Extensions.Localization;
 using P3AddNewFunctionalityDotNetCore.Models.Entities;
 using P3AddNewFunctionalityDotNetCore.Models.Repositories;
@@ -41,9 +43,9 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
                 {
                     Id = product.Id,
                     Stock = product.Quantity.ToString(),
-                    // UPD(SMO) : propage datatype change to double of Price in ProductViewModel
-                    // UT_TEST004(SMO) : change price datatype from double to string for test purposes
-                    // OLD ==> Price = product.Price,
+                    // UPD006(UPD001) : appears wrong to apply currency format to class field value
+                    // (currency format should only be used for display)
+                    // OLD ==> Price = product.Price.ToString(CultureInfo.InvariantCulture),
                     Price = product.Price.ToString(CultureInfo.InvariantCulture),
                     Name = product.Name,
                     Description = product.Description,
