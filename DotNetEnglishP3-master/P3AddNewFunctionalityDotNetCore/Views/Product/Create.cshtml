@@ -3,6 +3,19 @@
     ViewData["Title"] = Localizer["CreatProductTitle"];
     Layout = "_AdminLayout";
 }
+@*UPD007SMO(UPD003) : center form labels, input and spans 
+set input width to 100px.
+Align right OK Button*@
+<style type ="text/css">
+    .center-div {
+        margin: 0 auto; 
+        width: 600px;
+    }
+    .right-div {
+        float: right;
+        width: 600px;
+    }
+</style>
 
 <div asp-validation-summary="All" class="text-danger">
     @* UPD004(SMO) : deactivate debug
@@ -16,14 +29,12 @@
     <label>- msg PriceNotGreaterThanZero ==> @Localizer["PriceNotGreaterThanZero"]</label>*@
 </div>
 <form asp-action="Create" method="post">
-    <div class="mb-3 col-6">        
-        <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control" />
+    <div class="mb-3 col-6" style="center-div">
+        <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control"/>
         @* UPD004(SMO) : Client side validation error message *@
         @* UPD004(SMO) : correct syntax for cshtml ==> *@
         <span asp-validation-for="Name" class="text-danger"></span>
-        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span> *@
-        
-        
+        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span> *@               
         @* UPD02-TEST(SMO): Syntax label, input and span tag correct syntax for displaying data information and error messages
 
         CSHTML ==>
@@ -42,10 +53,10 @@
                 <span class="text-danger field-validation-valid"
                 data-valmsg-for="Movie.ReleaseDate" data-valmsg-replace="true"></span>
             </div>
-        *@        
+        *@                
     </div>
-    <div class="mb-3 col-4">
-        <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control" />
+    <div class="mb-3 col-4" style="center-div">
+        <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control"/>
         @* UPD004(SMO) : Client side validation error message *@
         @* UPD004(SMO) : correct syntax for cshtml ==> *@
         <span asp-validation-for="Price" class="text-danger"></span>
@@ -60,20 +71,20 @@
             @Html.ValidationMessage("Price","*")
         </label> *@
     </div>
-    <div class="mb-3 col-8">        
-        <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control" />        
+    <div class="mb-3 col-8" style="center-div">
+        <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control"/>
     </div>
-    <div class="mb-3 col-4">
+    <div class="mb-3 col-4" style="center-div">
         @* UPD004(SMO) : Client side validation error message *@
         @* UPD004(SMO) : correct syntax for cshtml ==> *@
-        <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control" />
+        <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control"/>
         <span asp-validation-for="Stock" class="text-danger"></span>
         @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Stock" data-valmsg-replace="true"></span> *@
     </div>
-    <div class="mb-3 col-8">        
-        <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control" />        
+    <div class="mb-3 col-8" style="center-div">
+        <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control"/>
     </div>
-    <div class="text-center">
+    <div class="text-center" style="right-div">
         <input class="btn btn-primary" type="submit" value="@Localizer["OK"]" />
     </div>
 </form>
