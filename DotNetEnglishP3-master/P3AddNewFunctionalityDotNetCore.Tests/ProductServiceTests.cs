@@ -133,7 +133,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductMissingName()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Price = "1.0"; 
                 product.Stock = "1";
@@ -165,7 +165,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductMissingPrice()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : MissingPrice.";
                 product.Stock = "1";
@@ -188,7 +188,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductMissingStock()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : MissingStock.";
                 product.Price = "1.0";
@@ -213,7 +213,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductPriceNotANumber()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : PriceNotANumber.";
                 product.Stock = "1";
@@ -252,7 +252,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductPriceNotGreaterThanZero()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : PriceNotGreaterThanZero.";
                 product.Stock = "1";
@@ -277,7 +277,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductStockNotGreaterThanZero()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : StockNotGreaterThanZero.";
                 product.Price = "1.0";
@@ -302,7 +302,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             [Fact]
             public void TestProductStockNotAnInteger()
             {
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : StockNotAnInteger.";
                 product.Price = "1.0";
@@ -338,8 +338,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             public void TestProductMaxNameLength()
             {
                 // *** Not requested by Louis specification ***. For learning purpose, fluent assertions and test code coverage evaluation.
-                
-                // Arrange ==> see public ProductViewModelValidationTest()
+
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Price = "1.0"; 
                 product.Stock = "1";
@@ -370,7 +370,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // *** Not requested by Louis specification ***. For learning purpose, fluent assertions and test code coverage evaluation.
 
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : MaxDescriptionLength.";
                 product.Price = "1.0";
@@ -401,7 +401,8 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             {
                 // *** Not requested by Louis specification ***. For learning purpose, fluent assertions and test code coverage evaluation.
 
-                // Arrange ==> see public ProductViewModelValidationTest()
+                // Arrange ==> see public UnitTest()
+                // Arrange ==> see public UnitTest()
                 // for instantiation of Product (ProductViewModel class)
                 product.Name = "Unit Test Product : MaxDetailsLength.";
                 product.Price = "1.0";
@@ -481,14 +482,13 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                     // Act
                     // Product creation test (create method of productViewModel class (which calls SaveProduct)).
                     productController.Create(productViewModel);
+                    // LinQ requête ==> https://learn.microsoft.com/fr-fr/dotnet/csharp/linq/get-started/introduction-to-linq-queries
+                    var product = await ctx.Product.Where(x => x.Name == "Product from CREATE integration test: SaveNewProduct").FirstOrDefaultAsync();
 
                     // Assert
                     // Ok if product number +1 after product creation.
                     Assert.Equal(count + 1, ctx.Product.Count());
-
-                    // Ok if product found. 
-                    // LinQ requête ==> https://learn.microsoft.com/fr-fr/dotnet/csharp/linq/get-started/introduction-to-linq-queries
-                    var product = await ctx.Product.Where(x => x.Name == "Product from CREATE integration test: SaveNewProduct").FirstOrDefaultAsync();
+                    // Ok if product found.                   
                     Assert.NotNull(product);
 
                     // Clean DB.

@@ -31,55 +31,24 @@ Align right OK Button*@
 <form asp-action="Create" method="post">
     <div class="mb-3 col-6" style="center-div">
         <label>@Localizer["Name"]*:</label><input asp-for="Name" class="form-control"/>
-        @* UPD004(SMO) : Client side validation error message *@
-        @* UPD004(SMO) : correct syntax for cshtml ==> *@
-        <span asp-validation-for="Name" class="text-danger"></span>
-        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span> *@               
-        @* UPD02-TEST(SMO): Syntax label, input and span tag correct syntax for displaying data information and error messages
-
-        CSHTML ==>
-            <div class="form-group">
-                <label asp-for="Movie.ReleaseDate" class="control-label"></label>
-                <input asp-for="Movie.ReleaseDate" class="form-control" />
-                <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
-            </div>
-
-        ==> HTML Display : 
-            <div class="form-group">
-                <label class="control-label" for="Movie_ReleaseDate">Release Date</label>
-                <input class="form-control" type="date" data-val="true"
-                data-val-required="The Release Date field is required."
-                id="Movie_ReleaseDate" name="Movie.ReleaseDate" value="">
-                <span class="text-danger field-validation-valid"
-                data-valmsg-for="Movie.ReleaseDate" data-valmsg-replace="true"></span>
-            </div>
-        *@                
+        @* UPD002(SMO) : Client side validation error message *@
+        @* UPD002(SMO) : correct syntax for cshtml ==> *@
+        <span asp-validation-for="Name" class="text-danger"></span>        
     </div>
     <div class="mb-3 col-4" style="center-div">
         <label>@Localizer["Price"]*:</label><input asp-for="Price" class="form-control"/>
-        @* UPD004(SMO) : Client side validation error message *@
-        @* UPD004(SMO) : correct syntax for cshtml ==> *@
-        <span asp-validation-for="Price" class="text-danger"></span>
-        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span> *@
-        @* UPD004(SMO) : deactivate debug 
-        <label class="text-danger">
-            TEST Price error messages display 01 :
-            @Html.ValidationMessageFor(model => model.Price) 
-        </label>
-        <label class="text-danger">
-            TEST Price error messages display 02 :
-            @Html.ValidationMessage("Price","*")
-        </label> *@
+        @* UPD002(SMO) : Client side validation error message *@
+        @* UPD002(SMO) : correct syntax for cshtml ==> *@
+        <span asp-validation-for="Price" class="text-danger"></span>        
     </div>
     <div class="mb-3 col-8" style="center-div">
         <label>@Localizer["Description"]:</label><input asp-for="Description" class="form-control"/>
     </div>
     <div class="mb-3 col-4" style="center-div">
-        @* UPD004(SMO) : Client side validation error message *@
-        @* UPD004(SMO) : correct syntax for cshtml ==> *@
+        @* UPD002(SMO) : Client side validation error message *@
+        @* UPD002(SMO) : correct syntax for cshtml ==> *@
         <label>@Localizer["Stock"]*:</label><input asp-for="Stock" type="text" class="form-control"/>
-        <span asp-validation-for="Stock" class="text-danger"></span>
-        @* UPD004(SMO) : syntax not correct for cshtml ==> <span class="text-danger field-validation-valid" data-valmsg-for="Stock" data-valmsg-replace="true"></span> *@
+        <span asp-validation-for="Stock" class="text-danger"></span>        
     </div>
     <div class="mb-3 col-8" style="center-div">
         <label>@Localizer["Details"]:</label><input asp-for="Details" class="form-control"/>

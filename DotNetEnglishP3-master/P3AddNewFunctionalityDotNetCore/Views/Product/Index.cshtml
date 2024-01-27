@@ -32,7 +32,7 @@
                     <td>@p.Description</td>
                     @*UPD006SMO(UPD001) apply currency format to Price. TEMPORARY FIX AS CULTUREINFO is not correctly manage in FR/ES/US.*@
                     @{
-                        //********* Analyse result : the way found to avoid exception raised proove ********* 
+                    //********* Analyse result : the way found to avoid exception raised proove ********* 
                         // that culture settings are not correctly managed in the application.
                         // Decimal separator should be . here but we have to force it to . (was ,)
                         // Currency symbol should be $ (for CultureInfo("en-US") but ¤ displayed.
@@ -60,31 +60,34 @@
                                     NumberFormatInfo nfiProviderFr = new CultureInfo("fr-FR", false).NumberFormat;
                                     // Change Decimalseparator for avoiding exception as Price is stored in DB with dot as decimal separator.
                                     nfiProviderFr.NumberDecimalSeparator = ".";
+                                    nfiProviderFr.CurrencySymbol = "€";
                                     //apply currency format
                                     sPrice = string.Format(nfiProviderFr, "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
                                     dPrice = Convert.ToDouble(sPrice, nfiProviderFr);
                                     //force currency format
-                                    sPrice = dPrice.ToString("c");
+                                    sPrice = dPrice.ToString("c", nfiProviderFr);
                                     break;
                                 case "es":
                                     NumberFormatInfo nfiProviderEs = new CultureInfo("es-ES", false).NumberFormat;
                                     // Change Decimalseparator for avoiding exception as Price is stored in DB with dot as decimal separator.
                                     nfiProviderEs.NumberDecimalSeparator = ".";
+                                    nfiProviderEs.CurrencySymbol = "€";
                                     //apply currency format
                                     sPrice = string.Format(nfiProviderEs, "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
                                     dPrice = Convert.ToDouble(sPrice, nfiProviderEs);
                                     //force currency format
-                                    sPrice = dPrice.ToString("c");
+                                    sPrice = dPrice.ToString("c", nfiProviderEs);
                                     break;
-                                case "en-US":
+                                case "en":
                                     NumberFormatInfo nfiProviderEn = new CultureInfo("en-US", false).NumberFormat;
                                     // Change Decimalseparator for avoiding exception as Price is stored in DB with dot as decimal separator.
                                     nfiProviderEn.NumberDecimalSeparator = ".";
+                                    nfiProviderEn.CurrencySymbol = "$";
                                     //apply currency format
                                     sPrice = string.Format(nfiProviderEn, "{0:c}", p.Price); // ==> strangely it doesn't add currency symbol.
                                     dPrice = Convert.ToDouble(sPrice, nfiProviderEn);
                                     //force currency format
-                                    sPrice = dPrice.ToString("c");
+                                    sPrice = dPrice.ToString("c", nfiProviderEn);
                                     break;
                                 default:
                                     sPrice = @p.Price;
